@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-
-// Importamos los íconos de Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faChartBar } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faChartBar, faChartPie } from '@fortawesome/free-solid-svg-icons'; 
 
 // Datos de ejemplo para los gráficos
 const data = [
@@ -28,11 +26,27 @@ const conversionsData = [20, 25, 30, 35, 40, 50, 55, 60];
 const usersData = [5, 10, 12, 20, 25, 30, 35, 40];
 
 const Dashboard = () => {
-  const [chartType, setChartType] = useState('line'); // Estado para alternar el tipo de gráfico
+  // Estado independiente para cada gráfico
+  const [viajesChartType, setViajesChartType] = useState('line');
+  const [clicksChartType, setClicksChartType] = useState('line');
+  const [conversionsChartType, setConversionsChartType] = useState('line');
+  const [usersChartType, setUsersChartType] = useState('line');
 
-  // Función para alternar entre gráficos de línea y barras
-  const toggleChartType = () => {
-    setChartType(chartType === 'line' ? 'bar' : 'line');
+  // Funciones para alternar entre gráficos
+  const toggleViajesChartType = () => {
+    setViajesChartType(viajesChartType === 'line' ? 'bar' : viajesChartType === 'bar' ? 'area' : 'line');
+  };
+
+  const toggleClicksChartType = () => {
+    setClicksChartType(clicksChartType === 'line' ? 'bar' : clicksChartType === 'bar' ? 'area' : 'line');
+  };
+
+  const toggleConversionsChartType = () => {
+    setConversionsChartType(conversionsChartType === 'line' ? 'bar' : conversionsChartType === 'bar' ? 'area' : 'line');
+  };
+
+  const toggleUsersChartType = () => {
+    setUsersChartType(usersChartType === 'line' ? 'bar' : usersChartType === 'bar' ? 'area' : 'line');
   };
 
   return (
@@ -40,137 +54,134 @@ const Dashboard = () => {
       <div className="grid grid-cols-4 gap-6">
         {/* Total Viajes con gráfico y opción para cambiar tipo */}
         <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-gray-700 text-xl">Total Viajes</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-gray-700 text-xl">Total Viajes</h2>
+            <FontAwesomeIcon
+              icon={viajesChartType === 'line' ? faChartBar : viajesChartType === 'bar' ? faChartPie : faChartLine}
+              className="cursor-pointer text-gray-500 ml-2"
+              onClick={toggleViajesChartType}
+            />
+          </div>
+
           <p className="text-sm font-light mt-2">694 viajes</p>
-          
-          {/* Gráfico (Cambiar según tipo seleccionado) */}
+
           <div className="my-4">
-            {chartType === 'line' ? (
+            {viajesChartType === 'line' ? (
               <Sparklines data={viajesData} limit={8} width={100} height={30} margin={5}>
                 <SparklinesLine color="blue" />
               </Sparklines>
-            ) : (
+            ) : viajesChartType === 'bar' ? (
               <BarChart width={100} height={30} data={viajesData.map((val, index) => ({ name: index, value: val }))}>
                 <Bar dataKey="value" fill="blue" />
               </BarChart>
+            ) : (
+              <AreaChart width={100} height={30} data={viajesData.map((val, index) => ({ name: index, value: val }))}>
+                <Area dataKey="value" fill="blue" stroke="blue" />
+              </AreaChart>
             )}
           </div>
 
           <p className="text-2xl font-bold text-green-500 mt-2">+5%</p>
           <p className="text-sm text-gray-500">compared to last month</p>
-          
-          {/* Botón para alternar el tipo de gráfico con ícono */}
-          <button 
-            onClick={toggleChartType} 
-            className="mt-2 bg-blue-500 text-white px-4 py-1 rounded flex items-center"
-          >
-            {/* Muestra el ícono correspondiente */}
-            {chartType === 'line' ? (
-              <FontAwesomeIcon icon={faChartBar} className="mr-2" />
-            ) : (
-              <FontAwesomeIcon icon={faChartLine} className="mr-2" />
-            )}
-            Cambiar
-          </button>
         </div>
 
         {/* Total Clicks con gráfico y opción para cambiar tipo */}
         <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-gray-700 text-xl">Total Clicks</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-gray-700 text-xl">Total Clicks</h2>
+            <FontAwesomeIcon
+              icon={clicksChartType === 'line' ? faChartBar : clicksChartType === 'bar' ? faChartPie : faChartLine}
+              className="cursor-pointer text-gray-500 ml-2"
+              onClick={toggleClicksChartType}
+            />
+          </div>
+
           <p className="text-sm font-light mt-2">789 clicks</p>
 
           <div className="my-4">
-            {chartType === 'line' ? (
+            {clicksChartType === 'line' ? (
               <Sparklines data={clicksData} limit={8} width={100} height={30} margin={5}>
                 <SparklinesLine color="green" />
               </Sparklines>
-            ) : (
+            ) : clicksChartType === 'bar' ? (
               <BarChart width={100} height={30} data={clicksData.map((val, index) => ({ name: index, value: val }))}>
                 <Bar dataKey="value" fill="green" />
               </BarChart>
+            ) : (
+              <AreaChart width={100} height={30} data={clicksData.map((val, index) => ({ name: index, value: val }))}>
+                <Area dataKey="value" fill="green" stroke="green" />
+              </AreaChart>
             )}
           </div>
 
           <p className="text-2xl font-bold text-green-500 mt-2">+6%</p>
           <p className="text-sm text-gray-500">compared to last month</p>
-
-          <button 
-            onClick={toggleChartType} 
-            className="mt-2 bg-green-500 text-white px-4 py-1 rounded flex items-center"
-          >
-            {chartType === 'line' ? (
-              <FontAwesomeIcon icon={faChartBar} className="mr-2" />
-            ) : (
-              <FontAwesomeIcon icon={faChartLine} className="mr-2" />
-            )}
-            Cambiar
-          </button>
         </div>
 
         {/* Conversions con gráfico y opción para cambiar tipo */}
         <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-gray-700 text-xl">Conversions</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-gray-700 text-xl">Conversions</h2>
+            <FontAwesomeIcon
+              icon={conversionsChartType === 'line' ? faChartBar : conversionsChartType === 'bar' ? faChartPie : faChartLine}
+              className="cursor-pointer text-gray-500 ml-2"
+              onClick={toggleConversionsChartType}
+            />
+          </div>
+
           <p className="text-sm font-light mt-2">789 conversions</p>
 
           <div className="my-4">
-            {chartType === 'line' ? (
+            {conversionsChartType === 'line' ? (
               <Sparklines data={conversionsData} limit={8} width={100} height={30} margin={5}>
                 <SparklinesLine color="red" />
               </Sparklines>
-            ) : (
+            ) : conversionsChartType === 'bar' ? (
               <BarChart width={100} height={30} data={conversionsData.map((val, index) => ({ name: index, value: val }))}>
                 <Bar dataKey="value" fill="red" />
               </BarChart>
+            ) : (
+              <AreaChart width={100} height={30} data={conversionsData.map((val, index) => ({ name: index, value: val }))}>
+                <Area dataKey="value" fill="red" stroke="red" />
+              </AreaChart>
             )}
           </div>
 
           <p className="text-2xl font-bold text-green-500 mt-2">+1%</p>
           <p className="text-sm text-gray-500">compared to last month</p>
-
-          <button 
-            onClick={toggleChartType} 
-            className="mt-2 bg-red-500 text-white px-4 py-1 rounded flex items-center"
-          >
-            {chartType === 'line' ? (
-              <FontAwesomeIcon icon={faChartBar} className="mr-2" />
-            ) : (
-              <FontAwesomeIcon icon={faChartLine} className="mr-2" />
-            )}
-            Cambiar
-          </button>
         </div>
 
         {/* Active Users con gráfico y opción para cambiar tipo */}
         <div className="bg-white p-4 shadow-md rounded-lg">
-          <h2 className="text-gray-700 text-xl">Active Users</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-gray-700 text-xl">Active Users</h2>
+            <FontAwesomeIcon
+              icon={usersChartType === 'line' ? faChartBar : usersChartType === 'bar' ? faChartPie : faChartLine}
+              className="cursor-pointer text-gray-500 ml-2"
+              onClick={toggleUsersChartType}
+            />
+          </div>
+
           <p className="text-sm font-light mt-2">21 active users</p>
 
           <div className="my-4">
-            {chartType === 'line' ? (
+            {usersChartType === 'line' ? (
               <Sparklines data={usersData} limit={8} width={100} height={30} margin={5}>
                 <SparklinesLine color="orange" />
               </Sparklines>
-            ) : (
+            ) : usersChartType === 'bar' ? (
               <BarChart width={100} height={30} data={usersData.map((val, index) => ({ name: index, value: val }))}>
                 <Bar dataKey="value" fill="orange" />
               </BarChart>
+            ) : (
+              <AreaChart width={100} height={30} data={usersData.map((val, index) => ({ name: index, value: val }))}>
+                <Area dataKey="value" fill="orange" stroke="orange" />
+              </AreaChart>
             )}
           </div>
 
           <p className="text-2xl font-bold text-blue-500 mt-2">+2%</p>
           <p className="text-sm text-gray-500">this week</p>
-
-          <button 
-            onClick={toggleChartType} 
-            className="mt-2 bg-orange-500 text-white px-4 py-1 rounded flex items-center"
-          >
-            {chartType === 'line' ? (
-              <FontAwesomeIcon icon={faChartBar} className="mr-2" />
-            ) : (
-              <FontAwesomeIcon icon={faChartLine} className="mr-2" />
-            )}
-            Cambiar
-          </button>
         </div>
       </div>
 
@@ -184,19 +195,11 @@ const Dashboard = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line 
-              type="monotone" 
-              dataKey="value" 
-              stroke="#8884d8" 
-              activeDot={(data) => {
-                if (Array.isArray(data)) {
-                  const maxValue = Math.max(...data.map(d => d.value));
-                  return data.value === maxValue ? { r: 10, stroke: '#ff7300' } : { r: 5 };
-                } else {
-                  return { r: 5 }; // Valor predeterminado si `data` no es un array
-                }
-              }}
-              
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }} // Ajuste simple para el tamaño del punto activo
             />
           </LineChart>
         </ResponsiveContainer>

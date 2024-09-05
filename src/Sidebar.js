@@ -4,7 +4,7 @@ const Sidebar = () => {
   return (
     <div className="w-64 h-screen bg-gray-800 text-white">
       <div className="flex items-center justify-center h-16">
-        <h1 className="text-xl font-bold">ECOPETRO</h1>
+        <h1 className="text-xl font-bold">FuelGuard</h1>
       </div>
       <ul className="mt-6">
         <li className="px-6 py-3 hover:bg-gray-700">
