@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, ResponsiveContainer } from 'recharts';
+import {
+  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, ResponsiveContainer,
+  RadialBarChart, RadialBar, PieChart, Pie, Cell, ComposedChart
+} from 'recharts';
+
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartLine, faChartBar, faChartPie, faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -234,9 +238,7 @@ const Dashboard = () => {
 
             {/* Selector de intervalo de tiempo dentro del cuadro comparativo */}
             <div className="absolute bottom-4 right-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="timeRange">
-                Seleccionar Intervalo de Tiempo:
-              </label>
+              
               <select
                 id="timeRange"
                 className="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
@@ -246,7 +248,6 @@ const Dashboard = () => {
                 <option value="day">Día</option>
                 <option value="month">Mes</option>
                 <option value="12months">Últimos 12 meses</option>
-                <option value="1year">1 Año</option>
                 <option value="5years">Últimos 5 Años</option>
               </select>
             </div>
@@ -262,12 +263,19 @@ const Dashboard = () => {
 
               {/* Gráfico de barras (fijo) */}
               <div className="my-4 w-full h-32">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={usersData.map((value, index) => ({ name: index + 1, value }))}>
-                    <XAxis dataKey="name" />
-                    <Bar dataKey="value" fill="rgba(255, 255, 255, 0.8)" radius={[10, 10, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={usersData.map((value, index) => ({ name: index + 1, value }))}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E0E0E0" />
+                  <XAxis dataKey="name" stroke="#FFFFFF" />  {/* Ejes con texto blanco */}
+                  <YAxis stroke="#FFFFFF" />
+                  <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.2)' }} contentStyle={{ backgroundColor: '#002244', borderColor: '#FFFFFF' }} labelStyle={{ color: '#FFFFFF' }} itemStyle={{ color: '#FFFFFF' }} />
+                  <Bar dataKey="value">
+                    {usersData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={index % 2 === 0 ? "#FFA500" : "#FFD700"} />  /* Alterna entre naranja (#FFA500) y amarillo (#FFD700) */
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
               </div>
 
               {/* Top Active Pages */}
@@ -279,26 +287,35 @@ const Dashboard = () => {
             </div>
 
             {/* Columna 2: Sales Summary y Customers */}
-            <div className="grid grid-rows-2 gap-6 w-full h-full">
+            <div className="grid grid-rows-4 gap-6 w-full h-full">
               {/* Sales Summary */}
-              <div className="bg-white p-4 shadow-md rounded-lg w-full h-full">
-                <h2 className="text-gray-700 text-xl">Sales Summary</h2>
-                <p className="text-sm text-gray-500">Compare Sales by Time</p>
-                <div className="mt-4">
-                  <p className="text-2xl font-bold text-green-500">473 <span className="text-sm text-gray-500">Monthly Sales</span></p>
-                  <p className="text-2xl font-bold text-red-500">46 <span className="text-sm text-gray-500">Sales Today</span></p>
+              <div className="row-span-3 bg-white p-6 shadow-md rounded-lg w-full h-full flex flex-col justify-between">
+                <div>
+                  <h2 className="text-gray-700 text-xl">Sales Summary</h2>
+                  <p className="text-sm text-gray-500">Compare Sales by Time</p>
+                  <div className="mt-4">
+                    <p className="text-3xl font-bold text-green-500">473 
+                      <span className="text-lg text-gray-500"> Monthly Sales</span>
+                    </p>
+                    <p className="text-3xl font-bold text-red-500">46 
+                      <span className="text-lg text-gray-500"> Sales Today</span>
+                    </p>
+                  </div>
                 </div>
-                <div className="mt-4 w-full h-24">
+                <div className="mt-4 flex-grow">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data}>
+                    <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
                       <Area dataKey="value" stroke="green" fill="lightgreen" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </div>
-
               {/* Customers */}
-              <div className="bg-white p-4 shadow-md rounded-lg flex items-center justify-between w-full">
+              <div className="row-span-1 bg-white p-4 shadow-md rounded-lg flex items-center justify-between w-full">
                 <div>
                   <p className="text-2xl font-bold">234</p>
                   <p className="text-sm text-gray-500">Customers</p>
