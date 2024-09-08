@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useLocation, Link } from 'react-router-dom';  // Importa useLocation y Link
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();  // Obtener la ubicación actual
 
   // Función para alternar el estado del sidebar
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  // Función para verificar si la ruta es activa
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className="flex">
@@ -33,7 +38,7 @@ const Sidebar = () => {
 
         {/* Foto del usuario con borde personalizado */}
         <div className="flex flex-col items-center mt-4">
-          <a href="/profile">
+          <Link to="/profile">
             <div className="relative w-24 h-24">
               <img
                 src="/images/user2.jpg"  // Aquí está la ruta de la imagen
@@ -42,30 +47,30 @@ const Sidebar = () => {
               />
               <div className="absolute inset-0 rounded-full border-2 border-transparent hover:border-green-500 transition-colors duration-300"></div>
             </div>
-          </a>
+          </Link>
         </div>
 
         <ul className="mt-6">
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Dashboard</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/') ? 'bg-gray-700' : ''}`}>
+            <Link to="/">Dashboard</Link>
           </li>
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Lista de Usuarios</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/users') ? 'bg-gray-700' : ''}`}>
+            <Link to="/users">Lista de Usuarios</Link>
           </li>
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Camiones</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/trucks') ? 'bg-gray-700' : ''}`}>
+            <Link to="/trucks">Camiones</Link>
           </li>
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Guías</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/guides') ? 'bg-gray-700' : ''}`}>
+            <Link to="/guides">Guías</Link>
           </li>
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Calendario</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/calendar') ? 'bg-gray-700' : ''}`}>
+            <Link to="/calendar">Calendario</Link>
           </li>
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Inbox</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/inbox') ? 'bg-gray-700' : ''}`}>
+            <Link to="/inbox">Inbox</Link>
           </li>
-          <li className="px-6 py-3 hover:bg-gray-700">
-            <a href="#">Chat</a>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/chat') ? 'bg-gray-700' : ''}`}>
+            <Link to="/chat">Chat</Link>
           </li>
         </ul>
       </div>

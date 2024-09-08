@@ -88,7 +88,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100">
+    <div className="min-h-screen w-full bg-gray-100 pt-6 pb-6"> {/* Agregué pb-6 para padding en la parte inferior */}
       <div className="container mx-auto px-6 w-full">
         {/* Primera Fila con 4 cuadros */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
