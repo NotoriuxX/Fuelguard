@@ -8,6 +8,7 @@ import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartLine, faChartBar, faChartPie, faUsers } from '@fortawesome/free-solid-svg-icons';
 
+
 // Datos de ejemplo para los gráficos
 const data = [
   { name: 'Jan', value: 60 },

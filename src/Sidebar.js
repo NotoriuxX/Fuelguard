@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, Link } from 'react-router-dom';  // Importa useLocation y Link
+import Profile from './Profile';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +42,7 @@ const Sidebar = () => {
           <Link to="/profile">
             <div className="relative w-24 h-24">
               <img
-                src="/images/user2.jpg"  // Aquí está la ruta de la imagen
+                src="/images/user2.jpg"  // Aquí está la de la imagen
                 alt="User Profile"
                 className="w-full h-full rounded-full object-cover border-2 border-gray-800 transition-colors duration-300"
               />
