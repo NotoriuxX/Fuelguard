@@ -58,8 +58,8 @@ const Sidebar = () => {
           <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/users') ? 'bg-gray-700' : ''}`}>
             <Link to="/users">Lista de Usuarios</Link>
           </li>
-          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/trucks') ? 'bg-gray-700' : ''}`}>
-            <Link to="/trucks">Camiones</Link>
+          <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/camiones') ? 'bg-gray-700' : ''}`}>
+            <Link to="/camiones">Camiones</Link>  
           </li>
           <li className={`px-6 py-3 hover:bg-gray-700 ${isActive('/guides') ? 'bg-gray-700' : ''}`}>
             <Link to="/guides">Guías</Link>
